@@ -20,6 +20,9 @@
 .VolumeIcon.icns
 *.log
 
+# Dist
+app
+
 # Tools
 node_modules
 *.log
