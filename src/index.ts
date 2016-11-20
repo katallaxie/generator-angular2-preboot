@@ -175,7 +175,7 @@ module.exports = yeoman.Base.extend({
       const cl = console.log;
       console.log = function () { };
 
-      const counter = helpers.ui.progress('Installing toolkit via npm ...');
+      const counter = helpers.ui.progress('Installing dependencies via npm ...');
       counter.start();
 
       this.npmInstall(undefined, config.npm, function () {
