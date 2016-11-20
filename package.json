@@ -1,0 +1,58 @@
+{
+  "name": "generator-angular2-preboot",
+  "version": "1.0.0",
+  "description": "The companion generator for the Angular 2 Preboot from @katallaxie",
+  "homepage": "https://github.com/katallaxie/generator-angular2-preboot",
+  "bugs": {
+    "url": "https://github.com/katallaxie/generator-angular2-preboot/issues"
+  },
+  "author": {
+    "name": "Sebastian Döll",
+    "email": "sebastian@katallaxie.me"
+  },
+  "files": [
+    "app"
+  ],
+  "main": "app/index",
+  "keywords": [
+    "yeoman-generator",
+    "generator",
+    "angular",
+    "typescript"
+  ],
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "clui": "^0.3.1",
+    "colors": "^1.1.2",
+    "lodash": "^4.15.0",
+    "promise": "^7.1.1",
+    "rimraf": "^2.5.4",
+    "underscore.string": "^3.3.4",
+    "yeoman-generator": "^0.24.1",
+    "yeoman-remote": "^1.0.1",
+    "yosay": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.48",
+    "@types/source-map": "^0.5.0",
+    "del": "^2.2.1",
+    "tslint": "^4.0.1",
+    "typescript": "^2.0.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/katallaxie/generator-angular2-preboot.git"
+  },
+  "scripts": {
+    "build": "node_modules/typescript/bin/tsc",
+    "prepublish": "npm run build",
+    "test": "tslint src/**/*.ts",
+    "tslint": "tslint",
+    "update": "git pull --recurse-submodules"
+  },
+  "engines": {
+    "node": ">=6.9.1",
+    "npm": ">=3"
+  },
+  "license": "MIT"
+}
