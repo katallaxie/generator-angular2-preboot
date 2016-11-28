@@ -153,16 +153,16 @@ module.exports = yeoman.Base.extend({
     pkg = _.merge(pkg, {
       author: {
         name: this.answers.name,
-        email: this.answers.email
+        email: this.answers.email,
       },
       bugs: {
-        url: ''
+        url: '',
       },
       description: this.answers.description,
       homepage: '',
       repository: {
         type: 'git',
-        url: ''
+        url: '',
       },
       version: '0.0.1',
     });
@@ -199,6 +199,6 @@ module.exports = yeoman.Base.extend({
       ].join(''));
     }
 
-  }
+  },
 
 });
