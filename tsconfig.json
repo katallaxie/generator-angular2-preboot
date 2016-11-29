@@ -1,36 +1,41 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "outDir": "app",
     "module": "commonjs",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
+    "noEmitHelpers": false,
     "strictNullChecks": false,
-    "skipDefaultLibCheck": true,
     "pretty": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "baseUrl": "./src",
     "typeRoots": [
       "node_modules/@types"
     ],
     "lib": [
-      "es5",
+      "dom",
+      "es2015",
       "es6",
       "es7"
     ],
     "types": [
+      "chalk",
+      "lodash",
       "node",
-      "source-map"
+      "source-map",
+      "underscore.string",
+      "yeoman-generator",
+      "yosay",
+      "rimraf"
     ]
   },
-  "include": [
-    "src/**/*.ts"
-  ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "app"
   ],
   "compileOnSave": false,
   "buildOnSave": false,

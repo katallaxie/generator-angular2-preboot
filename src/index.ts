@@ -1,204 +1,224 @@
 // deps
-const _ = require('lodash');
-const chalk = require('chalk');
-const path = require('path');
-const s = require('underscore.string');
-const yeoman = require('yeoman-generator');
-const proc = require('process');
+import { Base } from 'yeoman-generator';
+import * as _ from 'lodash';
+import * as chalk from 'chalk';
+import * as path from 'path';
+import * as proc from 'process';
+import * as rimraf from 'rimraf';
+import * as s from 'underscore.string';
+
 const yosay = require('yosay');
-const helpers = require('./helpers');
 const remote = require('yeoman-remote');
-const rimraf = require('rimraf');
 
 // config
-const config = require('./config');
+import { yell } from './helpers';
+import config from './config';
 
-// extending lodash with underscore.string methods
-_.mixin(s.exports());
+// yell('test');
 
-// use the base class of yeoman, and constuct ours generator
-module.exports = yeoman.Base.extend({
+class PrebootGenerator extends Base {
 
-  // generator constructor
-  constructor: function () {
+  constructor(args, options) {
+    super(args, options);
 
-    yeoman.Base.apply(this, arguments);
-    // add option to skip install
-
-    // have appname as command parameter
     this.argument('appname', {
-      type: String,
+      desc: 'appname',
+      type: 'String',
       defaults: path.basename(proc.cwd())
     });
 
-    // use the cache
+    // allow to cache
     this.option('cache');
 
-  },
+  }
 
   // this is the initializer method of the generator
-  initializing: function () {
+  get initializing() {
 
-    // async
-    const done = this.async();
+    return {
 
-    if (!this.options.cache) {
-      // new counter
-      const counter = helpers.ui.progress('Cleaning cache ...');
-      counter.start();
+      cleaning() {
+        // async
+        const done = this.async();
 
-      // we would the defaults here
+        if (!this.options['cache']) {
+          // new counter
+          const counter = yell('Cleaning cache ...');
+          counter.start();
 
-      rimraf(remote.cacheRoot(), {}, function () {
-        counter.stop();
-        done();
-      }.bind(this));
-    } else {
-      done();
-    }
-
-  },
-
-  // this property gets called by yeoman
-  prompting: function () {
-
-    // say yo!
-    this.log(yosay(`Greetings! Preboot your next Angular 2 project`));
-
-    // promptings
-    const prompts = [{
-      type: 'input',
-      name: 'app',
-      message: `What is the name of your fun new app?`,
-      default: this.appname,
-      store: true
-    }, {
-        type: 'input',
-        name: 'description',
-        message: `What is your great new app doing?`,
-        default: `Something really, really great ...`,
-        store: true
-      }, {
-        type: 'input',
-        name: 'name',
-        message: `What is your name?`,
-        default: this.user.git.name(),
-        store: true
-      }, {
-        type: 'input',
-        name: 'email',
-        message: `What is your email?`,
-        default: this.user.git.email(),
-        store: true
-      }];
-
-    // async
-    return this.prompt(prompts).then(function (answers) {
-      this.answers = answers;
-      this.answers.appname = _.camelize(_.slugify(_.humanize(this.answers.app)));
-    }.bind(this));
-
-  },
-
-  // configure before proceeding to setup
-  configuring: function () { },
-
-  // writing the files to folder
-  writing: function () {
-
-    // async
-    const done = this.async();
-
-    // new counter
-    const counter = helpers.ui.progress(`Staging Angular 2 Preboot ...`);
-    counter.start();
-
-    // download tarball
-    remote(config.tar, function (err, cached) {
-
-      console.error(err);
-
-      // we have a different root for the sources
-      this.sourceRoot(path.join(cached));
-
-      counter.stop();
-
-      this.fs.copy(
-        this.templatePath('**/*'),
-        this.destinationPath(''),
-        {
-          globOptions: {
-            dot: true
-          }
+          // we would the defaults here
+          rimraf(remote.cacheRoot(), () => {
+            counter.stop();
+            done();
+          });
+        } else {
+          done();
         }
-      );
-
-      done();
-    }.bind(this));
-
-  },
-
-  // ok, not really necessary
-  default() {
-
-    // compose here with others Yeoman generator
-
-  },
-
-  // post-setup
-  install: function () {
-
-    let pkg = require(this.destinationPath('package.json'));
-
-    pkg = _.merge(pkg, {
-      author: {
-        name: this.answers.name,
-        email: this.answers.email,
       },
-      bugs: {
-        url: '',
-      },
-      description: this.answers.description,
-      homepage: '',
-      repository: {
-        type: 'git',
-        url: '',
-      },
-      version: '0.0.1',
-    });
 
-    this.write(this.destinationPath('package.json'), JSON.stringify(pkg, null, 2));
+      hello() {
+        // say yo!
+        this.log(yosay(`Greetings! Preboot your next Angular 2 project`));
+      }
 
-    // npm
-    if (!this.options['skip-install']) {
-      // new counter
-      const cl = console.log;
-      console.log = function () { };
-
-      const counter = helpers.ui.progress('Installing dependencies via npm ...');
-      counter.start();
-
-      this.npmInstall(undefined, config.npm, function () {
-        console.log = cl;
-        counter.stop();
-      });
     }
 
-  },
+  }
 
-  // happy end
-  end: function () {
+  get prompting() {
+    return {
+      async appName() {
+        try {
+          const prompt = [{
+            type: 'input',
+            name: 'app',
+            message: `What is the name of your fun new app?`,
+            default: this.appname,
+            store: true
+          }];
+          const { app } = await this.prompt(prompt);
+          this.options.appname = s.camelize(s.slugify(s.humanize(app)));
+        } catch (err) {
+          this.error(`Error: ${err.message}`);
+        }
+      },
 
-    // saving config
-    this.config.save();
+      async gitUserName() {
+        try {
+          const prompt = [{
+            type: 'input',
+            name: 'name',
+            message: `What is your name?`,
+            default: this.user.git.name(),
+            store: true
+          }];
+          const { name } = await this.prompt(prompt);
+          this.options.name = name;
+        } catch (err) {
+          this.error(`Error: ${err.message}`);
+        }
+      },
 
-    // in case you wanted to skip install
-    if (this.options['skip-install']) {
-      this.log(['\nPlease have ', chalk.yellow.bold('npm install'), ' run. ',
-        'Afterwards run ', chalk.yellow.bold('npm run server:dev:hmr'), '.'
-      ].join(''));
+      async gitUserEmail() {
+        try {
+          const prompt = [{
+            type: 'input',
+            name: 'email',
+            message: `What is your email?`,
+            default: this.user.git.email(),
+            store: true
+          }];
+          const { email } = await this.prompt(prompt);
+          this.options.email = email;
+        } catch (err) {
+          this.error(`Error: ${err.message}`);
+        }
+      },
+
+      async yarn() {
+        try {
+          const prompt = [{
+            type: 'confirm',
+            name: 'yarn',
+            message: 'Would you like to use yarn?',
+            default: false,
+            store: true
+          }];
+          const { yarn } = await this.prompt(prompt);
+          this.options.yarn = yarn;
+        } catch (err) {
+          this.error(`Error: ${err.message}`);
+        }
+      }
     }
+  }
 
-  },
+  get configuring() { return {} }
 
-});
+  get writing() {
+    return {
+      staging() {
+        const done = this.async();
+
+        // new counter
+        const counter = yell(`Staging Angular 2 Preboot ...`);
+        counter.start();
+
+        // download tarball
+        remote(config.tar, (err, cached) => {
+
+          if (err) {
+            this.error(`Error ${err}`);
+          }
+
+          // we have a different root for the sources
+          this.sourceRoot(path.join(cached));
+
+          counter.stop();
+
+          this.fs.copy(
+            this.templatePath('**/*'),
+            this.destinationPath(''),
+            {
+              globOptions: {
+                dot: true
+              }
+            }
+          );
+
+          done();
+        });
+      },
+
+      async npm() {
+        let pkg = require(this.destinationPath('package.json'));
+        pkg = _.merge(pkg, {
+          author: {
+            name: this.options.name,
+            email: this.options.email,
+          },
+          bugs: {
+            url: '',
+          },
+          description: this.options.description,
+          homepage: '',
+          repository: {
+            type: 'git',
+            url: '',
+          },
+          version: '0.0.1',
+        });
+
+        await this.write(this.destinationPath('package.json'), JSON.stringify(pkg, null, 2));
+
+        // npm
+        if (!this.options['skip-install']) {
+          // new counter
+          const cl = console.log;
+          console.log = function () { };
+
+          const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
+          counter.start();
+
+          if (this.options.yarn) {
+            await this.runInstall('yarn', '', {}, () => {
+              console.log = cl;
+              counter.stop();
+            })
+          } else  {
+            await this.npmInstall(undefined, config.npm, () => {
+              console.log = cl;
+              counter.stop();
+            });
+          }
+        } else {
+          this.log(`\nPlease run ${chalk.yellow.bold('npm install')}.
+            \nAfterwards run ${chalk.yellow.bold('npm start')}`);
+        }
+      },
+    }
+  }
+}
+
+// exporting generator as CommonJS module
+module.exports = PrebootGenerator;
