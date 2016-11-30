@@ -24,7 +24,7 @@ class PrebootGenerator extends Base {
     this.argument('appname', {
       desc: 'appname',
       type: 'String',
-      defaults: path.basename(proc.cwd())
+      defaults: path.basename(proc.cwd()),
     });
 
     // allow to cache
@@ -59,9 +59,9 @@ class PrebootGenerator extends Base {
       hello() {
         // say yo!
         this.log(yosay(`Greetings! Preboot your next Angular 2 project`));
-      }
+      },
 
-    }
+    };
 
   }
 
@@ -74,7 +74,7 @@ class PrebootGenerator extends Base {
             name: 'app',
             message: `What is the name of your fun new app?`,
             default: this.appname,
-            store: true
+            store: true,
           }];
           const { app } = await this.prompt(prompt);
           this.options.appname = s.camelize(s.slugify(s.humanize(app)));
@@ -90,7 +90,7 @@ class PrebootGenerator extends Base {
             name: 'name',
             message: `What is your name?`,
             default: this.user.git.name(),
-            store: true
+            store: true,
           }];
           const { name } = await this.prompt(prompt);
           this.options.name = name;
@@ -106,7 +106,7 @@ class PrebootGenerator extends Base {
             name: 'email',
             message: `What is your email?`,
             default: this.user.git.email(),
-            store: true
+            store: true,
           }];
           const { email } = await this.prompt(prompt);
           this.options.email = email;
@@ -122,18 +122,18 @@ class PrebootGenerator extends Base {
             name: 'yarn',
             message: 'Would you like to use yarn?',
             default: false,
-            store: true
+            store: true,
           }];
           const { yarn } = await this.prompt(prompt);
           this.options.yarn = yarn;
         } catch (err) {
           this.error(`Error: ${err.message}`);
         }
-      }
-    }
+      },
+    };
   }
 
-  get configuring() { return {} }
+  get configuring() { return {}; };
 
   get writing() {
     return {
@@ -161,9 +161,9 @@ class PrebootGenerator extends Base {
             this.destinationPath(''),
             {
               globOptions: {
-                dot: true
-              }
-            }
+                dot: true,
+              },
+            },
           );
 
           done();
@@ -195,7 +195,7 @@ class PrebootGenerator extends Base {
         if (!this.options['skip-install']) {
           // new counter
           const cl = console.log;
-          console.log = function () { };
+          console.log = () => {};
 
           const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
           counter.start();
@@ -204,7 +204,7 @@ class PrebootGenerator extends Base {
             await this.runInstall('yarn', '', {}, () => {
               console.log = cl;
               counter.stop();
-            })
+            });
           } else  {
             await this.npmInstall(undefined, config.npm, () => {
               console.log = cl;
@@ -216,7 +216,7 @@ class PrebootGenerator extends Base {
             \nAfterwards run ${chalk.yellow.bold('npm start')}`);
         }
       },
-    }
+    };
   }
 }
 
