@@ -1,4 +1,4 @@
-// deps
+/* tslint:disable no-var-requires no-require-imports */
 const clui = require('clui');
 const Spinner = clui.Spinner;
 

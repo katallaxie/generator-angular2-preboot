@@ -1,12 +1,12 @@
-// deps
+/* tslint:disable no-require-imports no-var-requires adjacent-overload-signatures max-line-length no-empty ordered-imports */
 import { Base } from 'yeoman-generator';
 import * as chalk from 'chalk';
 import * as path from 'path';
 import * as proc from 'process';
 import * as rimraf from 'rimraf';
 import * as s from 'underscore.string';
+import yosay = require('yosay');
 
-const yosay = require('yosay');
 const remote = require('yeoman-remote');
 
 // config
@@ -179,7 +179,7 @@ class PrebootGenerator extends Base {
                 url: '',
               },
               version: '0.0.1',
-            }
+            },
           );
 
           done();
