@@ -1,6 +1,6 @@
 {
   "name": "generator-angular2-preboot",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "The companion generator for the Angular 2 Preboot of @katallaxie",
   "homepage": "https://github.com/katallaxie/generator-angular2-preboot",
   "bugs": {
