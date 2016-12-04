@@ -166,11 +166,13 @@ class PrebootGenerator extends Base {
             },
           );
 
-          done();
+          this._writeFiles(() => {
+            done();
+          });
         });
       },
 
-      async npm() {
+      npm() {
         let pkg = require(this.destinationPath('package.json'));
         pkg = _.merge(pkg, {
           author: {
@@ -189,7 +191,7 @@ class PrebootGenerator extends Base {
           version: '0.0.1',
         });
 
-        await this.write(this.destinationPath('package.json'), JSON.stringify(pkg, null, 2));
+        this.write(this.destinationPath('package.json'), JSON.stringify(pkg, null, 2));
 
         // npm
         if (!this.options['skip-install']) {
@@ -201,12 +203,12 @@ class PrebootGenerator extends Base {
           counter.start();
 
           if (this.options.yarn) {
-            await this.runInstall('yarn', '', {}, () => {
+            this.runInstall('yarn', '', {}, () => {
               console.log = cl;
               counter.stop();
             });
           } else  {
-            await this.npmInstall(undefined, config.npm, () => {
+            this.npmInstall(undefined, config.npm, () => {
               console.log = cl;
               counter.stop();
             });
