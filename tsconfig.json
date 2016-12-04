@@ -24,7 +24,6 @@
     ],
     "types": [
       "chalk",
-      "lodash",
       "node",
       "source-map",
       "underscore.string",

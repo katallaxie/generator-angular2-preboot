@@ -1,6 +1,5 @@
 // deps
 import { Base } from 'yeoman-generator';
-import * as _ from 'lodash';
 import * as chalk from 'chalk';
 import * as path from 'path';
 import * as proc from 'process';
@@ -36,7 +35,6 @@ class PrebootGenerator extends Base {
   get initializing() {
 
     return {
-
       cleaning() {
         // async
         const done = this.async();
@@ -139,12 +137,10 @@ class PrebootGenerator extends Base {
     return {
       staging() {
         const done = this.async();
-
         // new counter
         const counter = yell(`Staging Angular 2 Preboot ...`);
         counter.start();
 
-        // download tarball
         remote(config.tar, (err, cached) => {
 
           if (err) {
@@ -166,53 +162,44 @@ class PrebootGenerator extends Base {
             },
           );
 
-          this._writeFiles(() => {
-            done();
-          });
+          this.fs.extendJSON(
+            this.destinationPath('package.json'),
+            {
+              author: {
+                name: this.options.name,
+                email: this.options.email,
+              },
+              bugs: {
+                url: '',
+              },
+              description: this.options.description,
+              homepage: '',
+              repository: {
+                type: 'git',
+                url: '',
+              },
+              version: '0.0.1',
+            }
+          );
+
+          done();
         });
       },
 
       npm() {
-        let pkg = require(this.destinationPath('package.json'));
-        pkg = _.merge(pkg, {
-          author: {
-            name: this.options.name,
-            email: this.options.email,
-          },
-          bugs: {
-            url: '',
-          },
-          description: this.options.description,
-          homepage: '',
-          repository: {
-            type: 'git',
-            url: '',
-          },
-          version: '0.0.1',
-        });
-
-        this.write(this.destinationPath('package.json'), JSON.stringify(pkg, null, 2));
-
         // npm
         if (!this.options['skip-install']) {
           // new counter
           const cl = console.log;
-          console.log = () => {};
+          console.log = () => { };
 
           const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
           counter.start();
 
-          if (this.options.yarn) {
-            this.runInstall('yarn', '', {}, () => {
-              console.log = cl;
-              counter.stop();
-            });
-          } else  {
-            this.npmInstall(undefined, config.npm, () => {
-              console.log = cl;
-              counter.stop();
-            });
-          }
+          this.runInstall(this.options.yarn ? 'yarn' : 'npm', '', this.options.yarn ? {} : config.npm, () => {
+            console.log = cl;
+            counter.stop();
+          });
         } else {
           this.log(`\nPlease run ${chalk.yellow.bold('npm install')}.
             \nAfterwards run ${chalk.yellow.bold('npm start')}`);
