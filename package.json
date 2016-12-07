@@ -41,7 +41,7 @@
     "@types/yosay": "0.0.28",
     "del": "^2.2.1",
     "tslint": "^4.0.2",
-    "typescript": "2.0.10"
+    "typescript": "2.1.4"
   },
   "repository": {
     "type": "git",
