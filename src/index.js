@@ -1,11 +1,11 @@
 /* tslint:disable no-require-imports no-var-requires adjacent-overload-signatures max-line-length no-empty ordered-imports */
-import { Base } from 'yeoman-generator';
-import * as chalk from 'chalk';
-import * as path from 'path';
-import * as proc from 'process';
-import * as rimraf from 'rimraf';
-import * as s from 'underscore.string';
-import yosay = require('yosay');
+import Generator from 'yeoman-generator';
+import chalk from 'chalk';
+import path from 'path';
+import proc from 'process';
+import rimraf from 'rimraf';
+import s from 'underscore.string';
+import yosay from 'yosay';
 
 const remote = require('yeoman-remote');
 
@@ -15,7 +15,7 @@ import config from './config';
 
 // yell('test');
 
-class PrebootGenerator extends Base {
+class PrebootGenerator extends Generator {
 
   constructor(args, options) {
     super(args, options);
