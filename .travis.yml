@@ -4,5 +4,8 @@ node_js:
   - "5"
   - "6"
   - "node"
+script:
+  - npm build
+  - npm test
 
-sudo: false
+sudo: required
