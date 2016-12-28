@@ -10,7 +10,7 @@ describe('run generator', () => {
     test('downloading & copying', async () => {
         try {
             await helpers.run(path.join(__dirname, '../app'))
-                .withOptions({ 'skip-install': false })
+                .withArguments([])
                 .withPrompts({
                     "app": "test",
                     "name": "Sebastian Döll",
