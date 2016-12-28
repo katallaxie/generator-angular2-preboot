@@ -1,6 +1,6 @@
 {
   "name": "generator-angular2-preboot",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The companion generator for the Angular 2 Preboot of @katallaxie",
   "homepage": "https://github.com/katallaxie/generator-angular2-preboot",
   "bugs": {
@@ -33,30 +33,22 @@
     "yosay": "^1.2.0"
   },
   "devDependencies": {
-    "@types/chalk": "^0.4.31",
-    "@types/node": "^6.0.51",
-    "@types/rimraf": "0.0.28",
-    "@types/source-map": "^0.5.0",
-    "@types/underscore.string": "0.0.30",
-    "@types/yeoman-generator": "0.0.30",
-    "@types/yosay": "0.0.28",
     "babel-cli": "^6.18.0",
     "babel-eslint": "^7.1.1",
     "babel-preset-env": "^1.1.4",
     "babel-preset-node": "^5.1.1",
     "del": "^2.2.1",
-    "tslint": "^4.0.2",
-    "typescript": "2.1.4"
+    "eslint": "^3.12.2",
+    "tslint": "^4.2.0"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/katallaxie/generator-angular2-preboot.git"
   },
   "scripts": {
-    "build": "node_modules/typescript/bin/tsc",
+    "build": "babel src -d app",
     "prepublish": "npm run build",
-    "test": "npm run tslint 'src/**/*.ts'",
-    "tslint": "node_modules/tslint/bin/tslint",
+    "test": "eslint 'src/**/*.js'",
     "update": "git pull --recurse-submodules"
   },
   "engines": {

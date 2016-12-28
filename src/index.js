@@ -186,27 +186,29 @@ class PrebootGenerator extends Generator {
         });
       },
 
-      npm() {
-        // npm
-        if (!this.options['skip-install']) {
-          // new counter
-          const cl = console.log;
-          console.log = () => { };
-
-          const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
-          counter.start();
-
-          this.runInstall(this.options.yarn ? 'yarn' : 'npm', '', this.options.yarn ? {} : config.npm, () => {
-            console.log = cl;
-            counter.stop();
-          });
-        } else {
-          this.log(`\nPlease run ${chalk.yellow.bold('npm install')}.
-            \nAfterwards run ${chalk.yellow.bold('npm start')}`);
-        }
-      },
     };
   }
+
+  npm() {
+    // npm
+    if (!this.options['skip-install']) {
+      // new counter
+      const cl = console.log;
+      console.log = () => { };
+
+      const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
+      counter.start();
+
+      this.runInstall(this.options.yarn ? 'yarn' : 'npm', '', this.options.yarn ? {} : config.npm, () => {
+        console.log = cl;
+        counter.stop();
+      });
+    } else {
+      this.log(`\nPlease run ${chalk.yellow.bold('npm install')}.
+            \nAfterwards run ${chalk.yellow.bold('npm start')}`);
+    }
+  };
+
 }
 
 // exporting generator as CommonJS module
