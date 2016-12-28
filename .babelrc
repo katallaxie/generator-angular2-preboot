@@ -1,3 +1,4 @@
 {
-  "presets": ["node"]
+  "presets": ["node"],
+  "plugins": ["transform-async-to-generator"]
 }

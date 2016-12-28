@@ -189,7 +189,7 @@ class PrebootGenerator extends Generator {
     };
   }
 
-  npm() {
+  get npm() {
     // npm
     if (!this.options['skip-install']) {
       // new counter
