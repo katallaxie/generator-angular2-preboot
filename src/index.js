@@ -21,13 +21,11 @@ class PrebootGenerator extends Generator {
     super(args, options);
 
     this.argument('appname', {
-      desc: 'appname',
-      type: 'String',
-      defaults: path.basename(proc.cwd()),
+      desc: `The name of the application (e.g. 'example')`,
+      type: String,
+      optional: true,
+      default: path.basename(proc.cwd()),
     });
-
-    // allow to cache
-    this.option('cache');
 
   }
 
@@ -186,29 +184,29 @@ class PrebootGenerator extends Generator {
         });
       },
 
+      npm() {
+
+        // npm
+        if (!this.options['skip-install']) {
+          // new counter
+          const cl = console.log;
+          console.log = () => { };
+
+          const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
+          counter.start();
+
+          this.runInstall(this.options.yarn ? 'yarn' : 'npm', '', this.options.yarn ? {} : config.npm, () => {
+            console.log = cl;
+            counter.stop();
+          });
+        } else {
+          this.log(`\nPlease run ${chalk.yellow.bold('npm install')}.
+            \nAfterwards run ${chalk.yellow.bold('npm start')}`);
+        }
+      }
+
     };
   }
-
-  get writing() {
-    console.log(this.options);
-    // npm
-    if (!this.options['skip-install']) {
-      // new counter
-      const cl = console.log;
-      console.log = () => { };
-
-      const counter = yell(`Installing dependencies via ${(this.options.yarn ? 'yarn' : 'npm')} ...`);
-      counter.start();
-
-      this.runInstall(this.options.yarn ? 'yarn' : 'npm', '', this.options.yarn ? {} : config.npm, () => {
-        console.log = cl;
-        counter.stop();
-      });
-    } else {
-      this.log(`\nPlease run ${chalk.yellow.bold('npm install')}.
-            \nAfterwards run ${chalk.yellow.bold('npm start')}`);
-    }
-  };
 
 }
 
