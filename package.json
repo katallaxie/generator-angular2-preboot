@@ -42,7 +42,7 @@
     "del": "^2.2.1",
     "eslint": "^3.12.2",
     "jest": "^18.0.0",
-    "jest-cli": "^18.0.0",
+    "jest-cli": "^22.0.6",
     "yeoman-test": "^1.6.0"
   },
   "repository": {
