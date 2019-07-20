@@ -30,7 +30,7 @@
     "underscore.string": "^3.3.4",
     "yeoman-generator": "^1.0.1",
     "yeoman-remote": "^1.0.1",
-    "yosay": "^1.2.0"
+    "yosay": "^2.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
